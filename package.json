@@ -1,0 +1,57 @@
+{
+  "name": "contabo-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing the full Contabo API to OpenAI-compatible agents",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanchayan721/contabo-mcp.git"
+  },
+  "homepage": "https://github.com/sanchayan721/contabo-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/sanchayan721/contabo-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "contabo",
+    "model-context-protocol",
+    "openai",
+    "agents",
+    "vps",
+    "typescript"
+  ],
+  "bin": {
+    "contabo-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "generate": "tsx src/codegen/generate.ts spec/contabo-openapi.json",
+    "prebuild": "npm run generate",
+    "build": "tsc -p tsconfig.json",
+    "pretest": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/index.js",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "tsx": "^4.19.0",
+    "typescript": "^7.0.2",
+    "vitest": "^3.0.0"
+  },
+  "author": "Sanchayan (github.com/sanchayan721)"
+}

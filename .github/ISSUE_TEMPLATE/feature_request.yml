@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest a new capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that you can't?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: api-check
+    attributes:
+      label: API coverage check
+      description: Check the Contabo API docs (https://api.contabo.com) — is the missing capability an existing operation behaving wrong, or an operation this server doesn't expose yet?
+      options:
+        - label: The operation exists in the Contabo API but this server doesn't expose it correctly
+        - label: This is a new capability request beyond the current API
