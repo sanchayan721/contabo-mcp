@@ -34,6 +34,7 @@ export interface BuiltOp {
   destructive: boolean;
 
   schema: any; // z.ZodObject with an `operation` literal — typed loosely, generated code
+  schemaSrc: string;
   pathParams: string[];
   queryParams: string[];
   bodyParams: string[];
@@ -71,10 +72,7 @@ function typeLabel(schema: Record<string, unknown>): string {
   return "unknown";
 }
 
-function metaFromParam(
-  p: Param,
-  location: "path" | "query",
-): import("../../infrastructure/config/index").ParamMeta {
+function metaFromParam(p: Param, location: "path" | "query"): ParamMeta {
   const schema = p.schema as Record<string, unknown>;
   return {
     name: p.name,
@@ -88,11 +86,7 @@ function metaFromParam(
   };
 }
 
-function metaFromBody(
-  name: string,
-  schema: JsonSchema,
-  required: string[],
-): import("../../infrastructure/config/index").ParamMeta {
+function metaFromBody(name: string, schema: JsonSchema, required: string[]): ParamMeta {
   const s = schema as Record<string, unknown>;
   return {
     name,
@@ -133,7 +127,7 @@ function buildOp(raw: RawOperation, spec: JsonSchema): BuiltOp {
   }
 
   const fields: string[] = [`operation: z.literal(${JSON.stringify(name)})`];
-  const paramMeta: import("../config/index").ParamMeta[] = [];
+  const paramMeta: ParamMeta[] = [];
 
   const emitCtx = { root: spec } as EmitContext;
 
@@ -187,10 +181,10 @@ function buildOp(raw: RawOperation, spec: JsonSchema): BuiltOp {
     queryParams,
     bodyParams,
     paramMeta,
-  } as BuiltOp & { schemaSrc: string };
+  };
 }
 
-function registrySource(ops: (BuiltOp & { schemaSrc: string })[]): string {
+function registrySource(ops: BuiltOp[]): string {
   const entries = ops.map((op) => {
     const meta = {
       id: op.id,
@@ -211,7 +205,7 @@ function registrySource(ops: (BuiltOp & { schemaSrc: string })[]): string {
     const metaStr = Object.entries(meta)
       .map(([k, v]) => `    ${k}: ${JSON.stringify(v)}`)
       .join(",\n");
-    return `  {\n    ...{\n${metaStr}\n    },\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\n    schema: ${(op as Record<string, unknown>).schemaSrc as string} as any,\n  }`;
+    return `  {\n    ...{\n${metaStr}\n    },\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\n    schema: ${op.schemaSrc} as any,\n  }`;
   });
 
   return `// GENERATED FILE — do not edit. Regenerate with: npm run generate
