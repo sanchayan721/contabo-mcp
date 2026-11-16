@@ -1,0 +1,88 @@
+{
+  "name": "contabo-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing the full Contabo API to OpenAI-compatible agents",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanchayan721/contabo-mcp.git"
+  },
+  "homepage": "https://github.com/sanchayan721/contabo-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/sanchayan721/contabo-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "contabo",
+    "model-context-protocol",
+    "openai",
+    "agents",
+    "vps",
+    "typescript"
+  ],
+  "bin": {
+    "contabo-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "bun": ">=1.1"
+  },
+  "scripts": {
+    "generate": "bun src/codegen/generate.ts spec/contabo-openapi.json",
+    "prebuild": "bun run generate",
+    "build": "tsc",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage --coverage-reporter=text --coverage-reporter=lcov",
+    "coverage:check": "node scripts/coverage-check.mjs --lcov coverage/lcov.info --min-lines 95",
+    "coverage:summary": "node scripts/coverage-check.mjs --lcov coverage/lcov.info --summary-md",
+    "test:ci": "bun run test:coverage && bun run coverage:check",
+    "test:watch": "bun test --watch",
+    "start": "bun dist/index.js",
+    "prepare": "bun run build && husky",
+    "lint": "bunx eslint . --ext .ts --max-warnings=0",
+    "lint:fix": "bunx eslint . --ext .ts --fix",
+    "format": "bunx prettier --write .",
+    "format:check": "bunx prettier --check .",
+    "lint:staged": "lint-staged"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-plugin-prettier": "^5.2.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.0",
+    "typescript": "^5.5.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "bunx eslint --fix --max-warnings=0"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "bunx prettier --write"
+    ]
+  },
+  "trustedDependencies": [
+    "@modelcontextprotocol/sdk",
+    "reflect-metadata",
+    "tsyringe",
+    "zod"
+  ],
+  "author": "Sanchayan (github.com/sanchayan721)"
+}

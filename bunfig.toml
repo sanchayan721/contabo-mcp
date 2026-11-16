@@ -1,0 +1,21 @@
+# Bun configuration for contabo-mcp
+# https://bun.sh/docs/configuration
+
+[install]
+# Install configuration
+# registry = "https://registry.npmjs.org/"
+
+[test]
+# Test configuration
+# timeout = 30000
+
+[run]
+# Runtime configuration
+# env = { NODE_ENV = "development" }
+
+[build]
+# Build configuration
+# target = "node"
+# outdir = "./dist"
+# minify = true
+# sourcemap = "external"
