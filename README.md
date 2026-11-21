@@ -20,6 +20,8 @@ agents (OpenAI Agents SDK, Codex CLI, Claude Desktop, Cursor, …).
 Create the four credentials in the [Contabo Customer Control Panel](https://my.contabo.com/api/details):
 `ClientId`, `ClientSecret`, `API User` (email), `API Password`.
 
+> **Note:** the new Contabo panel (`my.contabo.com/account/security`) shows the Client ID, Client Secret, and Username, but has no way to create the **API Password**. Its "Send Link" button only resets your control-panel login password, which is not the API password. Set the API Password in the **old Contabo UI**: <https://dedicatedserver.contabo.com/api/details>. Contabo never shows it again, so store it in a password manager.
+
 ## Configuration
 
 | Env var                 | Required | Meaning                                            |
